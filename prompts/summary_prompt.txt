@@ -1,0 +1,4 @@
+1. Search the project with file named: {{args}}
+2. Read each one of them.
+3. Provide a concise summary of all files you read.
+4. If the file is not found, say "File not found".
