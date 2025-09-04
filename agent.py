@@ -1,24 +1,59 @@
 from utils.llm_loader import load_llm
 from tools.summarize import summarize_tool
 from tools.generate_canvas import generate_canvas_tool
+from tools.file_search_tool import search_files
+from utils.file_search import validate_file_path
 from langchain.tools import tool
 from langgraph.prebuilt import create_react_agent
 
 # Wrap tools
 @tool("summarize", description="Summarize notes from a file")
 def summarize(file_path: str) -> str:
-    return summarize_tool(file_path)
+    """Summarize the content of a file using LLM and prompt template.
+
+    Args:
+        file_path: Path to the file to summarize.
+
+    Returns:
+        str: Summary of the file content.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+        PermissionError: If the file cannot be read due to permission issues.
+    """
+    try:
+        validated_path = validate_file_path(file_path)
+        return summarize_tool(validated_path)
+    except (FileNotFoundError, PermissionError) as e:
+        return f"Error: {str(e)}"
 
 @tool("generate_canvas", description="Generate a JSON canvas from notes")
 def generate_canvas(file_path: str, output_path: str = "10.Canvas/output.canvas") -> str:
-    return generate_canvas_tool(file_path, output_path)
+    """Generate canvas JSON from notes using LLM and save to disk.
 
-# Load model
-llm = load_llm()
+    Args:
+        file_path: Path to the file to generate canvas from.
+        output_path: Path to save the generated canvas JSON.
 
-# Create agent
-agent = create_react_agent(
-    llm,
-    tools=[summarize, generate_canvas],
-    prompt="You are a canvas assistant"
-)
+    Returns:
+        str: Path to the saved canvas JSON.
+
+    Raises:
+        FileNotFoundError: If the file or prompt file does not exist.
+        ValueError: If the LLM does not return valid JSON.
+        PermissionError: If the file cannot be read or written due to permission issues.
+    """
+    try:
+        validated_path = validate_file_path(file_path)
+        return generate_canvas_tool(validated_path, output_path)
+    except (FileNotFoundError, ValueError, PermissionError) as e:
+        return f"Error: {str(e)}"
+
+def get_agent():
+    llm = load_llm()
+    agent = create_react_agent(
+        llm,
+        tools=[summarize, generate_canvas, search_files],
+        prompt="You are a canvas assistant"
+    )
+    return agent

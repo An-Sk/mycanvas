@@ -3,3 +3,7 @@ langchain-openai
 pypdf
 python-dotenv
 typer
+python-magic  # For better file type detection
+requests      # For handling web attachments
+openai        # For direct OpenAI access
+langgraph     # Explicit dependency (future proofing)
