@@ -1,17 +1,17 @@
-import logging
 from pathlib import Path
 from utils.file_io import read_file
 from utils.llm_loader import load_llm
 from langchain.prompts import PromptTemplate
+from utils.logger import logger
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 def summarize_tool(file_path: str) -> str:
     """Summarize the content of a file using LLM and prompt template."""
     try:
         logger.info(f"Starting summarization for file: {file_path}")
+
+        # Get the base directory of the project
+        base_dir = Path(__file__).parent.parent
 
         # Load input file
         logger.info("Loading input file")
@@ -19,7 +19,8 @@ def summarize_tool(file_path: str) -> str:
 
         # Load prompt template from prompts/summary_prompt.txt
         logger.info("Loading prompt template")
-        prompt_text = Path("prompts/summary_prompt.txt").read_text(encoding="utf-8")
+        prompt_path = base_dir / "prompts" / "summary_prompt.txt"
+        prompt_text = prompt_path.read_text(encoding="utf-8")
         prompt = PromptTemplate.from_template(prompt_text)
 
         # Load model

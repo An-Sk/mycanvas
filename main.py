@@ -1,6 +1,20 @@
 from agent import get_agent
 
+import logging
+from utils.logger import logger
+
+
+
 def run():
+
+    # Reduce httpx logging level
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+    # Set log level dynamically here
+    logger.setLevel(logging.INFO)   # show INFO and above
+    # logger.setLevel(logging.DEBUG)  # show DEBUG too
+    # logger.setLevel(logging.ERROR)  # only show errors
+
+    logger.info("tool starting.")
     agent = get_agent()
     # Ask the agent to summarize a file
     inputs = {"messages": [("user", "Summarize Gemini4JSONCanvas.MD")]}

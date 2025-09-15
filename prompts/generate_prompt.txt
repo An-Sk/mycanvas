@@ -48,22 +48,24 @@ You will provide the following in the Canvas Tittle Node text content
 2. A list of file name(s) with each file name marked with double braket (Obsidian way of linking relevant notes)
 
 This is an example:
-{"id":"title","type":"text","text":"## OAI-DR - TDD for Python Data Projects: A Collaborative Guide\n\n[[OAI-DR - 如何通过测试驱动开发（TDD）方法高效协作完成 Python 数据处理项目]]","x":20,"y":-740,"width":400,"height":180},
+{{"id":"title","type":"text","text":"## OAI-DR - TDD for Python Data Projects: A Collaborative Guide\n\n[[OAI-DR - 如何通过测试驱动开发（TDD）方法高效协作完成 Python 数据处理项目]]","x":20,"y":-740,"width":400,"height":180}},
 
 ## Notes for Attachments
 If there are any attachments in the markdown file you read, you will generate an attachment node too.
+
+The result must be a JSON object with two top-level keys: nodes and edges. Nothing else.
 
 **Attachments in the Obsidian Vault**
 - This is an example of attachment in Obsidian Markdown file:
 ![[Pasted image 20250527105840.png]]
 
 - This is an example of attachment node in JSON Canvas file:
-{"id":"tdd_image","type":"file","file":"08.Attachments/Pasted image 20250527105840.png","x":-700,"y":-186,"width":394,"height":211}
+{{"id":"tdd_image","type":"file","file":"08.Attachments/Pasted image 20250527105840.png","x":-700,"y":-186,"width":394,"height":211}}
 
 **Attachments from online**
 - This is an example of attachment in Obsidian Markdown file:
 ![Image](https://eugeneyan.com/assets/narrativeqa.webp "Image")
 
 - This is an example of attachment node in JSON Canvas file:
-{"id":"image2","type":"link","url":"https://eugeneyan.com/assets/narrativeqa.webp","x":-1080,"y":800,"width":350,"height":200}
+{{"id":"image2","type":"link","url":"https://eugeneyan.com/assets/narrativeqa.webp","x":-1080,"y":800,"width":350,"height":200}}
 """

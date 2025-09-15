@@ -2,6 +2,8 @@ import os
 from langchain_openai import ChatOpenAI
 from typing import Dict, Optional
 from dotenv import load_dotenv
+from utils.logger import logger, MyLoggerCallback
+
 
 def load_llm() -> ChatOpenAI:
     """Load LLM with support for multiple providers (OpenRouter, OpenAI, Mistral)."""
@@ -19,8 +21,12 @@ def load_llm() -> ChatOpenAI:
             "base_url": os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
         },
         "mistral": {
-            "api_key": os.getenv("MISTRAL_API_KEY", os.getenv("OPENAI_API_KEY")),
+            "api_key": os.getenv("MISTRAL_API_KEY", os.getenv("MISTRAL_API_KEY")),
             "base_url": os.getenv("MISTRAL_BASE_URL", "https://api.mistral.ai/v1")
+        },
+        "moonshotai": {
+            "api_key": os.getenv("MOONSHOTAI_API_KEY", os.getenv("MOONSHOTAI_API_KEY")),
+            "base_url": os.getenv("MOONSHOTAI_BASE_URL", "https://api.moonshot.ai/v1")
         }
     }
 
@@ -36,8 +42,15 @@ def load_llm() -> ChatOpenAI:
     if not api_key:
         raise ValueError(f"API key for provider '{provider}' is not set. Please check your environment variables.")
 
-    return ChatOpenAI(
+
+    logger.debug("Loaded LLM %s with provider=%s", model, provider)
+
+    llm = ChatOpenAI(
         model=model,
         api_key=api_key,
-        base_url=base_url
+        base_url=base_url,
+        max_retries=3,
+        callbacks=[MyLoggerCallback()]
     )
+
+    return llm

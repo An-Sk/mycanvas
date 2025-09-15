@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 from typing import List, Optional
+from utils.logger import logger
 
 def find_files(
     directory: str,
@@ -22,11 +23,16 @@ def find_files(
     path = Path(directory)
     if not path.exists():
         raise FileNotFoundError(f"Directory not found: {directory}")
-
+    
     if recursive:
-        return [str(p) for p in path.rglob(pattern)]
+        matches = [str(p) for p in path.rglob(pattern)]
     else:
-        return [str(p) for p in path.glob(pattern)]
+        matches = [str(p) for p in path.glob(pattern)]
+
+    
+    logger.info("find_files found %d matches (showing up to 10): %s", len(matches), matches[:10])
+
+    return matches
 
 def validate_file_path(file_path: str) -> str:
     """Validate file path exists and is accessible.
