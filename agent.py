@@ -1,10 +1,12 @@
 from utils.llm_loader import load_llm
+from utils.files_interactions import validate_file_path
 from tools.summarize import summarize_tool
 from tools.generate_canvas import generate_canvas_tool
-from tools.file_search_tool import search_files
-from utils.file_search import validate_file_path
+from tools.file_search import find_files
 from langchain.tools import tool
 from langgraph.prebuilt import create_react_agent
+from typing import List
+
 
 # Wrap tools
 @tool("summarize", description="Summarize notes from a file")
@@ -48,6 +50,33 @@ def generate_canvas(file_path: str, output_path: str = "10.Canvas/output.canvas"
         return generate_canvas_tool(validated_path, output_path)
     except (FileNotFoundError, ValueError, PermissionError) as e:
         return f"Error: {str(e)}"
+    
+
+@tool("search_files", description="Search for files in the project directory")
+def search_files(
+    directory: str = ".",
+    pattern: str = "*.md",
+    recursive: bool = True
+) -> List[str]:
+    """Search for files matching pattern in directory.
+
+    Args:
+        directory: Directory to search in (default: current directory)
+        pattern: File pattern to match (default: "*.md")
+        recursive: Whether to search recursively (default: True)
+
+    Returns:
+        List of matching file paths
+    """
+    try:
+        return find_files(directory, pattern, recursive)
+    except FileNotFoundError as e:
+        return [f"Error: {str(e)}"]
+
+
+
+
+
 
 def get_agent():
     llm = load_llm()
