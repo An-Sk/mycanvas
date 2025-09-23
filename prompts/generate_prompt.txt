@@ -40,7 +40,7 @@ This transformation requires achieving optimal information density. It must not 
 1. Generate Node Data: Create the JSON objects for each node, adhering strictly to the JSON Canvas specification.
 2. Generate Edge Data: Create the JSON objects for each edge.
 3. Compile and Validate: Assemble the nodes and edges into the final JSON structure. Ensure the output is valid JSON and conforms entirely to the specification.
-4. Save Result: name and save Canvas file under path '<current_project>/10.Canvas'
+4. Save Result: name and save Canvas file
 
 ## Notes for Tittle Node
 You will provide the following in the Canvas Tittle Node text content

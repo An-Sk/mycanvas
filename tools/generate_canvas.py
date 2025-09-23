@@ -1,5 +1,5 @@
 from pathlib import Path
-from utils.file_io import read_file, save_json
+from utils.file_io import read_file, save_json, extract_json, ensure_folder
 from utils.llm_loader import load_llm
 from utils.logger import logger
 from langchain.prompts import PromptTemplate
@@ -20,6 +20,8 @@ def generate_canvas_tool(file_path: str, output_path: str, max_retries: int = 2)
         # Load input file
         logger.info("Loading input file")
         file_content = read_file(file_path)
+        if ensure_folder(output_path):
+            logger.info(f"Created missing folder for output: {Path(output_path).parent}")
 
         # Load prompt template
         logger.info("Loading prompt template")
@@ -41,7 +43,8 @@ def generate_canvas_tool(file_path: str, output_path: str, max_retries: int = 2)
                 result = chain.invoke({"args": file_content})
 
                 logger.info("Parsing JSON response")
-                canvas_json = json.loads(result.content)
+                
+                canvas_json = extract_json(result.content)
 
                 save_json(canvas_json, output_path)
                 logger.info(f"Canvas generation completed successfully -> {output_path}")
@@ -49,7 +52,8 @@ def generate_canvas_tool(file_path: str, output_path: str, max_retries: int = 2)
 
             except json.JSONDecodeError as e:
                 logger.error(f"[Attempt {attempt+1}] JSON decode error: {e}")
-                logger.error("Raw LLM output:\n%s", result.content if result else "<no result>")
+                logger.debug("Sending prompt to LLM:\n%s", prompt.format(args=file_content)[:1000])
+                logger.error("JSON Raw LLM output:\n%s", result.content if result else "<no result>")
                 last_error = e
 
             except Exception as e:
@@ -63,6 +67,6 @@ def generate_canvas_tool(file_path: str, output_path: str, max_retries: int = 2)
         raise
     except Exception as e:
         logger.error(f"Error during canvas generation: {e}")
-        logger.error("Raw LLM output:\n%s", result.content)
+        logger.error("Other error, Raw LLM output:\n%s", result.content)
         raise
 
