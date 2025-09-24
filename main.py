@@ -34,7 +34,9 @@ def run():
     # Ask the agent to generate a canvas
     inputs = {"messages": [("user", "Generate canvas from Gemini4JSONCanvas.MD")]}
     result = agent.invoke(inputs)
-    #print(f"Full result:\n{result}")
+    #print(f"Full result:\n{result.pretty}")
+    for message in result["messages"]:
+        message.pretty_print()
     pretty_print(result)
     print("\n=== Canvas Output ===")
     print(result["messages"][-1].content)

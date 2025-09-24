@@ -9,7 +9,7 @@ from typing import List
 
 
 # Wrap tools
-@tool("summarize", description="Summarize notes from a file")
+@tool("summarize", description="Summarize notes from a file. Input must be a full file path returned by search_files")
 def summarize(file_path: str) -> str:
     """Summarize the content of a file using LLM and prompt template.
 
@@ -29,8 +29,8 @@ def summarize(file_path: str) -> str:
     except (FileNotFoundError, PermissionError) as e:
         return f"Error: {str(e)}"
 
-@tool("generate_canvas", description="Generate a JSON canvas from notes")
-def generate_canvas(file_path: str, output_path: str = "10.Canvas/output.canvas") -> str:
+@tool("generate_canvas", description="Generate a JSON canvas from notes. Input must be full paths returned by search_files.")
+def generate_canvas(file_paths: List[str], output_path: str = "10.Canvas/output.canvas") -> str:
     """Generate canvas JSON from notes using LLM and save to disk.
 
     Args:
@@ -46,30 +46,30 @@ def generate_canvas(file_path: str, output_path: str = "10.Canvas/output.canvas"
         PermissionError: If the file cannot be read or written due to permission issues.
     """
     try:
-        validated_path = validate_file_path(file_path)
-        return generate_canvas_tool(validated_path, output_path)
+        validated = [validate_file_path(p) for p in file_paths]
+        return generate_canvas_tool(validated, output_path)
     except (FileNotFoundError, ValueError, PermissionError) as e:
         return f"Error: {str(e)}"
     
 
-@tool("search_files", description="Search for files in the project directory")
+@tool("search_files", description="Find files or folders by name before summarizing or generating canvas")
 def search_files(
+    query: str,
     directory: str = ".",
-    pattern: str = "*.md",
     recursive: bool = True
 ) -> List[str]:
-    """Search for files matching pattern in directory.
+    """Search for files or folders by name.
 
     Args:
-        directory: Directory to search in (default: current directory)
-        pattern: File pattern to match (default: "*.md")
-        recursive: Whether to search recursively (default: True)
+        query: A filename, partial name, or glob pattern (e.g., "Gemini4*", "*.md").
+        directory: Root directory to search from.
+        recursive: Whether to search subdirectories. (default: True)
 
     Returns:
         List of matching file paths
     """
     try:
-        return find_files(directory, pattern, recursive)
+        return find_files(query, directory, recursive)
     except FileNotFoundError as e:
         return [f"Error: {str(e)}"]
 
