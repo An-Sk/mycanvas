@@ -26,7 +26,9 @@ def run():
     #pp = pprint.PrettyPrinter(indent=2, width=120, compact=False)
     #print("=== Full result (pretty):===")
     #pp.pprint(result)
-    pretty_print(result)
+    #pretty_print(result)
+    for message in result["messages"]:
+        message.pretty_print()
     print("\n=== Summary Output ===")
     print(result["messages"][-1].content)
     print("\n=== Summary Output Ended ===")
@@ -37,7 +39,7 @@ def run():
     #print(f"Full result:\n{result.pretty}")
     for message in result["messages"]:
         message.pretty_print()
-    pretty_print(result)
+    #pretty_print(result)
     print("\n=== Canvas Output ===")
     print(result["messages"][-1].content)
     print("\n=== Canvas Output Ended===")

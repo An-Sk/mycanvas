@@ -9,16 +9,17 @@ import json
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)"""
 
-def generate_canvas_tool(file_path: str, output_path: str, max_retries: int = 2) -> str:
+def generate_canvas_tool(file_paths: list[str], output_path: str, max_retries: int = 2) -> str:
     """Generate canvas JSON from notes using LLM and save to disk."""
     try:
-        logger.info(f"Starting canvas generation for file: {file_path}")
+        logger.info(f"Starting canvas generation for files(for now 1st only): {file_paths}")
 
         # Get the base directory of the project
         base_dir = Path(__file__).parent.parent
 
         # Load input file
         logger.info("Loading input file")
+        file_path = file_paths[0]  # only first for now
         file_content = read_file(file_path)
         if ensure_folder(output_path):
             logger.info(f"Created missing folder for output: {Path(output_path).parent}")

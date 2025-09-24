@@ -5,16 +5,17 @@ from langchain.prompts import PromptTemplate
 from utils.logger import logger
 
 
-def summarize_tool(file_path: str) -> str:
+def summarize_tool(file_paths: list[str]) -> str:
     """Summarize the content of a file using LLM and prompt template."""
     try:
-        logger.info(f"Starting summarization for file: {file_path}")
+        logger.info(f"Starting summarization for files(as of now only 1st one): {file_paths}")
 
         # Get the base directory of the project
         base_dir = Path(__file__).parent.parent
 
         # Load input file
         logger.info("Loading input file")
+        file_path = file_paths[0]  # only first for now
         file_content = read_file(file_path)
 
         # Load prompt template from prompts/summary_prompt.txt
@@ -32,7 +33,7 @@ def summarize_tool(file_path: str) -> str:
         chain = prompt | llm
         result = chain.invoke({"args": file_content})
 
-        logger.info("Summarization completed successfully")
+        logger.info(f"Summarization for {Path(file_path).name} completed successfully")
         return result.content
 
     except FileNotFoundError as e:

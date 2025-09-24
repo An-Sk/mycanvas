@@ -10,7 +10,7 @@ from typing import List
 
 # Wrap tools
 @tool("summarize", description="Summarize notes from a file. Input must be a full file path returned by search_files")
-def summarize(file_path: str) -> str:
+def summarize(file_paths: List[str]) -> str:
     """Summarize the content of a file using LLM and prompt template.
 
     Args:
@@ -24,8 +24,8 @@ def summarize(file_path: str) -> str:
         PermissionError: If the file cannot be read due to permission issues.
     """
     try:
-        validated_path = validate_file_path(file_path)
-        return summarize_tool(validated_path)
+        validated = [validate_file_path(p) for p in file_paths]
+        return summarize_tool(validated)
     except (FileNotFoundError, PermissionError) as e:
         return f"Error: {str(e)}"
 
@@ -71,7 +71,7 @@ def search_files(
     try:
         return find_files(query, directory, recursive)
     except FileNotFoundError as e:
-        return [f"Error: {str(e)}"]
+        return f"Error: {str(e)}"
 
 
 
