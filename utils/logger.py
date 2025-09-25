@@ -6,7 +6,7 @@ logger.setLevel(logging.DEBUG)  # global level
 
 # Console handler
 ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+#ch.setLevel(logging.DEBUG)
 
 # Format
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(name)s - %(message)s")

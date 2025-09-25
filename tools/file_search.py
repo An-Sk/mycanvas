@@ -20,6 +20,7 @@ def find_files(
     Returns:
         List of matching file paths
     """
+    logger.info(f"Starting files checking for query{query}")
     path = Path(directory)
     if not path.exists():
         raise FileNotFoundError(f"Directory not found: {directory}")
@@ -35,7 +36,7 @@ def find_files(
         ]
 
     matches = [str(p) for p in matches]
-    logger.info("find_files found %d matches for '%s' (showing up to 10): %s", len(matches), query, matches[:10])
+    logger.debug("find_files found %d matches for '%s' (showing up to 10): %s", len(matches), query, matches[:10])
     
     return matches
     

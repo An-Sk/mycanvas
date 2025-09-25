@@ -42,7 +42,7 @@ def generate_canvas_tool(file_paths: list[str], output_path: str, max_retries: i
             try:
                 logger.info(f"[Attempt {attempt+1}] Running canvas generation chain")
                 result = chain.invoke({"args": file_content})
-                logger.info("Raw LLM output:\n%s", result.content)
+                logger.debug("Raw LLM output:\n%s", result.content)
 
                 logger.info("Parsing JSON response")
                 
@@ -54,7 +54,7 @@ def generate_canvas_tool(file_paths: list[str], output_path: str, max_retries: i
 
             except json.JSONDecodeError as e:
                 logger.error(f"[Attempt {attempt+1}] JSON decode error: {e}")
-                #logger.debug("Sending prompt to LLM:\n%s", prompt.format(args=file_content)[:1000])
+                logger.debug("Sending prompt to LLM:\n%s", prompt.format(args=file_content)[:1000])
                 #logger.error("JSON Raw LLM output:\n%s", result.content if result else "<no result>")
                 last_error = e
 
