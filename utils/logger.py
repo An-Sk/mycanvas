@@ -1,5 +1,8 @@
 import logging
 from langchain_core.callbacks.base import BaseCallbackHandler
+import io
+import sys
+from contextlib import redirect_stdout
 
 logger = logging.getLogger("myapp")
 logger.setLevel(logging.DEBUG)  # global level
@@ -20,14 +23,16 @@ if not logger.handlers:  # prevent duplicate logs
 class MyLoggerCallback(BaseCallbackHandler):
     def on_llm_start(self, serialized, prompts, **kwargs):
         try:
-            logger.debug("LLM start. Prompts (truncated):\n%s", [p[:1000] for p in prompts])
+            pp = capture_pretty_print([p[:1000] for p in prompts])
+            logger.debug("LLM start. Prompts (truncated):\n%s", pp)
         except Exception:
             logger.exception("Error logging on_llm_start")
 
     def on_llm_end(self, response, **kwargs):
         try:
             # response.generations may be present depending on version
-            logger.debug("LLM end. Response (truncated):\n%s", getattr(response, "generations", str(response))[:2000])
+            pp = capture_pretty_print(getattr(response, "generations", str(response))[:2000])
+            logger.debug("LLM end. Response (truncated):\n%s", pp)
         except Exception:
             logger.exception("Error logging on_llm_end")
 
@@ -84,3 +89,10 @@ def pretty_print(obj, title="Result"):
     tree = Tree(Text(title, style="bold cyan"))
     add_to_tree(tree, obj)
     console.print(tree)
+
+
+def capture_pretty_print(obj):
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        pretty_print(obj)
+    return buf.getvalue().strip()
