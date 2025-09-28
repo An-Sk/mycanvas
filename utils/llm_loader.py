@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from utils.logger import logger, MyLoggerCallback
 
 
+
 def load_llm() -> ChatOpenAI:
     """Load LLM with support for multiple providers (OpenRouter, OpenAI, Mistral)."""
     load_dotenv()

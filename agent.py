@@ -1,4 +1,4 @@
-from utils.llm_loader import load_llm
+from utils.llm_instance import llm_instance
 from utils.files_interactions import validate_file_path
 from tools.summarize import summarize_tool
 from tools.generate_canvas import generate_canvas_tool
@@ -79,7 +79,7 @@ def search_files(
 
 
 def get_agent():
-    llm = load_llm()
+    llm = llm_instance
     agent = create_react_agent(
         llm,
         tools=[summarize, generate_canvas, search_files],

@@ -23,7 +23,7 @@ if not logger.handlers:  # prevent duplicate logs
 class MyLoggerCallback(BaseCallbackHandler):
     def on_llm_start(self, serialized, prompts, **kwargs):
         try:
-            pp = capture_pretty_print([p[:1000] for p in prompts])
+            pp = capture_pretty_print([p[:2000] for p in prompts])
             logger.debug("LLM start. Prompts (truncated):\n%s", pp)
         except Exception:
             logger.exception("Error logging on_llm_start")

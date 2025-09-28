@@ -1,6 +1,6 @@
 from pathlib import Path
 from utils.file_io import read_file
-from utils.llm_loader import load_llm
+from utils.llm_instance import llm_instance
 from langchain.prompts import PromptTemplate
 from utils.logger import logger
 
@@ -26,12 +26,13 @@ def summarize_tool(file_paths: list[str]) -> str:
 
         # Load model
         logger.info("Loading LLM model")
-        llm = load_llm()
+        llm = llm_instance
 
         # Run chain
         logger.info("Running summarization chain")
         chain = prompt | llm
         result = chain.invoke({"args": file_content})
+        #print(file_content)
 
         logger.info(f"Summarization for {Path(file_path).name} completed successfully")
         return result.content

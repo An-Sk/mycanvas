@@ -1,6 +1,6 @@
 from pathlib import Path
 from utils.file_io import read_file, save_json, extract_json, ensure_folder
-from utils.llm_loader import load_llm
+from utils.llm_instance import llm_instance
 from utils.logger import logger
 from langchain.prompts import PromptTemplate
 import json
@@ -32,7 +32,7 @@ def generate_canvas_tool(file_paths: list[str], output_path: str, max_retries: i
 
         # Load model
         logger.info("Loading LLM model")
-        llm = load_llm()
+        llm = llm_instance
         chain = prompt | llm
 
         last_error = None
