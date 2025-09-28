@@ -1,3 +1,4 @@
+from tasks.task_handler import run_task
 from utils.llm_instance import llm_instance
 from utils.files_interactions import validate_file_path
 from tools.summarize import summarize_tool
@@ -74,6 +75,19 @@ def search_files(
         return f"Error: {str(e)}"
 
 
+@tool("run_task", description="Run a predefined task or generate a dynamic plan for a custom request")
+def run_task_tool(request: str) -> str:
+    """Run a predefined task or generate a dynamic plan for a custom request.
+    Args:
+        request: The task request, either a predefined task name or a free-form description.
+    
+    Returns:
+        str: The result of the task execution.
+    """
+    try:
+        return run_task(request)
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 
 
