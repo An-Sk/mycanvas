@@ -49,6 +49,13 @@ python main.py generate_canvas --args "file_name"
 
 ### In progress
 - [ ] Task planning: `run_task_tool` is defined in `agent.py` but not wired into `get_agent()` tools list — agent can't use it yet
+  - `planner.py`, `registry.py`, `task_handler.py` need refactoring (flagged as fragile / "sucks" / needs bullet-list plan support)
+
+### Todo
+- [ ] Multi-note search / folders — search handles patterns but no multi-note or folder aggregation
+- [ ] Unify `save_json` / `save_md` into one helper, add append support
+- [ ] Streaming responses
+- [ ] Multi-step prompt / better canvas generation
 
 ### Future goals
 - [ ] Support for PDF files
