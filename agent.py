@@ -9,12 +9,14 @@ from typing import List
 from langchain_openai import ChatOpenAI
 
 # Wrap tools
-@tool("summarize", description="Summarize notes from a file. Input must be a full file path returned by search_files")
-def summarize(file_paths: List[str]) -> str:
+@tool
+def summarize(file_paths: List[str], output_path: str = "10.Canvas/summarize.md") -> str:
     """Summarize the content of a file using LLM and prompt template.
+    Input must be full paths returned by search_files.
 
     Args:
         file_path: Path to the file to summarize.
+        output_path: Path to save the generated summary.
 
     Returns:
         str: Summary of the file content.
@@ -25,13 +27,14 @@ def summarize(file_paths: List[str]) -> str:
     """
     try:
         validated = [validate_file_path(p) for p in file_paths]
-        return summarize_tool(validated)
+        return summarize_tool(validated, output_path)
     except (FileNotFoundError, PermissionError) as e:
         return f"Error: {str(e)}"
 
-@tool("generate_canvas", description="Generate a JSON canvas from notes. Input must be full paths returned by search_files.")
+@tool
 def generate_canvas(file_paths: List[str], output_path: str = "10.Canvas/output.canvas") -> str:
     """Generate canvas JSON from notes using LLM and save to disk.
+    Input must be full paths returned by search_files.
 
     Args:
         file_path: Path to the file to generate canvas from.
@@ -52,7 +55,9 @@ def generate_canvas(file_paths: List[str], output_path: str = "10.Canvas/output.
         return f"Error: {str(e)}"
     
 
-@tool("search_files", description="Find files or folders by name before summarizing or generating canvas")
+#@tool("search", description="Find files or folders by name before summarizing or generating canvas")
+# decorator name, can rename the function name, otherwise if empty it's function name.
+@tool
 def search_files(
     query: str,
     directory: str = ".",

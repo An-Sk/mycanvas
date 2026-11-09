@@ -14,6 +14,12 @@ def save_json(data: dict, path: str):
     Path(path).write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
+def save_md(data: dict, path: str):
+    """Save dictionary as JSON file, UTF-8, with indent=2."""
+    Path(path).write_text(data, encoding="utf-8")
+
+
+
 def extract_json(text: str) -> dict:
     """Extract first valid JSON object from text."""
     match = re.search(r"\{[\s\S]*\}", text)
