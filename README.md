@@ -57,6 +57,18 @@ python main.py generate_canvas --args "file_name"
 - [ ] Streaming responses
 - [ ] Multi-step prompt / better canvas generation
 
+### Chores / tech debt
+- [ ] Rewrite summarization execution logic
+- [ ] Move planner to new git branch (delete planner from main, commit, continue on branch)
+- [ ] Update `requirements.txt`, add `.env.example`, add config validation
+- [ ] Add tests (validate canvas JSON against Canvas spec, test search, full workflow)
+- [ ] Write documentation (env vars, provider setup, file locations, error messages/troubleshooting)
+
+### Future Vision
+- [ ] Canvas extension without regeneration (extend existing canvas instead of regenerating)
+- [ ] Advanced multi-note canvas generation (connect several notes into one canvas)
+- [ ] Plugin system
+
 ### Future goals
 - [ ] Support for PDF files
 - [ ] Support for attachments (images, etc.)
