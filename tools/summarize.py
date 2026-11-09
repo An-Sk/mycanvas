@@ -3,6 +3,7 @@ from utils.file_io import read_file
 from utils.llm_instance import llm_instance
 from langchain.prompts import PromptTemplate
 from utils.logger import logger
+import toml
 
 
 def summarize_tool(file_paths: list[str]) -> str:
@@ -20,9 +21,10 @@ def summarize_tool(file_paths: list[str]) -> str:
 
         # Load prompt template from prompts/summary_prompt.txt
         logger.info("Loading prompt template")
-        prompt_path = base_dir / "prompts" / "summary_prompt.txt"
-        prompt_text = prompt_path.read_text(encoding="utf-8")
-        prompt = PromptTemplate.from_template(prompt_text)
+        #prompt_path = base_dir / "prompts" / "summary_prompt.txt"
+        #prompt_text = prompt_path.read_text(encoding="utf-8")
+        config = toml.load(base_dir / "prompts" / "summary_prompt.toml")
+        prompt = PromptTemplate.from_template(config["prompt"])
 
         # Load model
         logger.info("Loading LLM model")

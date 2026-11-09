@@ -4,6 +4,7 @@ from utils.llm_instance import llm_instance
 from utils.logger import logger
 from langchain.prompts import PromptTemplate
 import json
+import toml
 
 """# Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -26,9 +27,10 @@ def generate_canvas_tool(file_paths: list[str], output_path: str, max_retries: i
 
         # Load prompt template
         logger.info("Loading prompt template")
-        prompt_path = base_dir / "prompts" / "generate_prompt.txt"
-        prompt_text = prompt_path.read_text(encoding="utf-8")
-        prompt = PromptTemplate.from_template(prompt_text)
+        #prompt_path = base_dir / "prompts" / "generate_prompt.txt"
+        #prompt_text = prompt_path.read_text(encoding="utf-8")
+        config = toml.load(base_dir / "prompts" / "generate_prompt.toml")
+        prompt = PromptTemplate.from_template(config["prompt"])
 
         # Load model
         logger.info("Loading LLM model")
