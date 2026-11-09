@@ -70,6 +70,6 @@ def generate_canvas_tool(file_paths: list[str], output_path: str, max_retries: i
         logger.error(f"File not found: {e}")
         raise
     except Exception as e:
-        logger.error(f"Error during canvas generation: {e}")
+        logger.error(f"Error during canvas generation", exc_info=True)
         raise
 
