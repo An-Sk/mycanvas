@@ -1,6 +1,6 @@
 from pathlib import Path
 from utils.file_io import read_file, save_json, extract_json, ensure_folder
-from utils.llm_instance import llm_instance
+from utils.llm_loader import llm_instance
 from utils.logger import logger
 from langchain.prompts import PromptTemplate
 import json

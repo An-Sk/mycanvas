@@ -10,7 +10,7 @@
 # utils.llm_instance to call the LLM.
 # tasks.handler to provide a plan back.
 
-from utils.llm_instance import llm_instance
+from utils.llm_loader import llm_instance
 
 PLAN_PROMPT = """
 You are a task planner.

@@ -1,6 +1,6 @@
 from pathlib import Path
 from utils.file_io import read_file
-from utils.llm_instance import llm_instance
+from utils.llm_loader import llm_instance
 from langchain.prompts import PromptTemplate
 from utils.logger import logger
 import toml

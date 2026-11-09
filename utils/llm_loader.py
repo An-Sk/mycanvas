@@ -6,6 +6,8 @@ from utils.logger import logger, MyLoggerCallback
 
 
 
+
+
 def load_llm() -> ChatOpenAI:
     """Load LLM with support for multiple providers (OpenRouter, OpenAI, Mistral)."""
     load_dotenv()
@@ -55,3 +57,6 @@ def load_llm() -> ChatOpenAI:
     )
 
     return llm
+
+
+llm_instance = load_llm()

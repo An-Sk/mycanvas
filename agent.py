@@ -1,5 +1,4 @@
 from tasks.task_handler import run_task
-from utils.llm_instance import llm_instance
 from utils.files_interactions import validate_file_path
 from tools.summarize import summarize_tool
 from tools.generate_canvas import generate_canvas_tool
@@ -7,7 +6,7 @@ from tools.file_search import find_files
 from langchain.tools import tool
 from langgraph.prebuilt import create_react_agent
 from typing import List
-
+from langchain_openai import ChatOpenAI
 
 # Wrap tools
 @tool("summarize", description="Summarize notes from a file. Input must be a full file path returned by search_files")
@@ -92,8 +91,7 @@ def run_task_tool(request: str) -> str:
 
 
 
-def get_agent():
-    llm = llm_instance
+def get_agent(llm: ChatOpenAI):
     agent = create_react_agent(
         llm,
         tools=[summarize, generate_canvas, search_files],

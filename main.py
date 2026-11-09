@@ -2,7 +2,7 @@ import argparse
 from agent import get_agent
 from utils.monitor import set_logger_level, output_results, LoggerLevel, OutputMode
 from utils.logger import logger
-
+from utils.llm_loader import load_llm
 
 
 
@@ -40,6 +40,7 @@ def parse_args():
 def run():
 
     args = parse_args()
+    llm = load_llm()
 
     # Map CLI strings → enums
     log_level_map = {
@@ -59,7 +60,7 @@ def run():
 
     set_logger_level(log_level)
     logger.info("Agent started.")
-    agent = get_agent()
+    agent = get_agent(llm)
 
 
     # Ask the agent to summarize a file
